@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E35D8B61-8DA5-48A9-B6F7-BD633F7B452F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TigeR.YuGiOh.UI</RootNamespace>
+    <AssemblyName>UI</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Svg2Xaml, Version=0.2.5773.26975, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xaml2Svg.0.2.3\lib\net40\Svg2Xaml.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UpdateControls, Version=2.3.0.0, Culture=neutral, PublicKeyToken=19e83a8289e31a8f, processorArchitecture=MSIL">
+      <HintPath>..\packages\UpdateControls.2.3.1.0\lib\net45\UpdateControls.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="UpdateControls.XAML, Version=2.3.0.0, Culture=neutral, PublicKeyToken=19e83a8289e31a8f, processorArchitecture=MSIL">
+      <HintPath>..\packages\UpdateControls.2.3.1.0\lib\net45\UpdateControls.XAML.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="WriteableBitmapEx.Wpf, Version=1.5.0.0, Culture=neutral, PublicKeyToken=50375ca6144f1c69, processorArchitecture=MSIL">
+      <HintPath>..\packages\WriteableBitmapEx.1.5.0.0\lib\net40\WriteableBitmapEx.Wpf.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CardView.xaml.cs">
+      <DependentUpon>CardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Helper\Assets.cs" />
+    <Compile Include="Helper\Capture.cs" />
+    <Compile Include="Helper\InvertedBooleanConverter.cs" />
+    <Compile Include="Helper\NullToVisibilityConverter.cs" />
+    <Compile Include="Helper\TitleStretchPanel.cs" />
+    <Compile Include="Helper\ValueConverterGroup.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="CardView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Assets.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\card_monster.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Fonts\Stone Serif Semibold.ttf" />
+    <Resource Include="Assets\Fonts\Yu-Gi-Oh! ITC Stone Serif LT Italic.ttf" />
+    <Resource Include="Assets\Fonts\Yu-Gi-Oh! ITC Stone Serif Small Caps Bold.ttf" />
+    <Resource Include="Assets\Fonts\Yu-Gi-Oh! Matrix Book.ttf" />
+    <Resource Include="Assets\Fonts\Yu-Gi-Oh! Matrix Regular Small Caps 2.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Game\Game.csproj">
+      <Project>{73f0277e-82b7-41a4-8840-fba1d2d789db}</Project>
+      <Name>Game</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\spell.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\attribute_dark.svg" />
+    <Resource Include="Assets\attribute_divine.svg" />
+    <Resource Include="Assets\attribute_earth.svg" />
+    <Resource Include="Assets\attribute_fire.svg" />
+    <Resource Include="Assets\attribute_light.svg" />
+    <Resource Include="Assets\attribute_water.svg" />
+    <Resource Include="Assets\attribute_wind.svg" />
+    <Resource Include="Assets\level_star.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\card_dark_synchro.png" />
+    <Resource Include="Assets\card_effect.png" />
+    <Resource Include="Assets\card_fusion.png" />
+    <Resource Include="Assets\card_ritual.png" />
+    <Resource Include="Assets\card_spell.png" />
+    <Resource Include="Assets\card_synchro.png" />
+    <Resource Include="Assets\card_trap.png" />
+    <Resource Include="Assets\card_xyz.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\trap.svg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\back.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\holofoil.png" />
+    <Resource Include="Assets\holofoil_millenium_rare.png" />
+    <Resource Include="Assets\holofoil_parallel.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\ts_continuous.svg" />
+    <Resource Include="Assets\ts_equip.svg" />
+    <Resource Include="Assets\ts_field.svg" />
+    <Resource Include="Assets\ts_quick-play.svg" />
+    <Resource Include="Assets\ts_ritual.svg" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

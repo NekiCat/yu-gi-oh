@@ -1,0 +1,31 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:svg2xaml="clr-namespace:Svg2Xaml;assembly=Svg2Xaml"
+                    xmlns:local="clr-namespace:TigeR.YuGiOh.UI">
+
+    <!-- Used for card names -->
+    <FontFamily x:Key="MatrixSmallCaps">../Assets/Fonts/#Yu-Gi-Oh! Matrix Small Caps 2</FontFamily>
+    
+    <!-- Used for card effect texts -->
+    <FontFamily x:Key="MatrixBook">../Assets/Fonts/#Yu-Gi-Oh! Matrix Book</FontFamily>
+    
+    <!-- Used for attributes, types and spell/trap properties -->
+    <FontFamily x:Key="ITCStoneSerifSmallCaps">../Assets/Fonts/#Yu-Gi-Oh!ITCStoneSerifSmallCaps</FontFamily>
+    
+    <!-- Used for lore text -->
+    <FontFamily x:Key="ITCStoneSerifLightItalic">../Assets/Fonts/#Yu-Gi-Oh! StoneSerif LT</FontFamily>
+    
+    <!-- Used for edition -->
+    <FontFamily x:Key="ITCStoneSerifSemibold">../Assets/Fonts/#StoneSerif-Semibold</FontFamily>
+
+    <BitmapImage x:Key="AssetMonsterCardImage" UriSource="../Assets/card_monster.png"/>
+    <ImageBrush x:Key="AssetMonsterCardBrush" ImageSource="{StaticResource AssetMonsterCardImage}"/>
+    
+    <BitmapImage x:Key="AssetHolofoilImage" UriSource="../Assets/holofoil.png"/>
+    <ImageBrush x:Key="AssetHolofoilBrush" ImageSource="{StaticResource AssetHolofoilImage}"/>
+
+    <BitmapImage x:Key="AssetHolofoilParallelImage" UriSource="../Assets/holofoil_parallel.png"/>
+    <ImageBrush x:Key="AssetHolofoilParallelBrush" ImageSource="{StaticResource AssetHolofoilParallelImage}"/>
+
+    <ImageBrush x:Key="AssetLevelStarBrush" ImageSource="{svg2xaml:SvgImage Uri=UI;component/Assets/level_star.svg}" ViewportUnits="Absolute" Viewport="0,0,14,14"/>
+</ResourceDictionary>

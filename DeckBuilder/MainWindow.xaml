@@ -1,0 +1,160 @@
+﻿<Window x:Class="DeckBuilder.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ui="clr-namespace:TigeR.YuGiOh.UI;assembly=UI"
+        xmlns:local="clr-namespace:DeckBuilder"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="827" Width="903.058" Loaded="Window_Loaded">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="107*"/>
+            <ColumnDefinition Width="148*"/>
+        </Grid.ColumnDefinitions>
+
+        <ScrollViewer>
+            <StackPanel>
+                <GroupBox Header="File" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,10,10,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="New" Margin="5,5,5,5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Button_Click_5"/>
+                        
+                        <Button Content="Load" Margin="5,5,5,5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Button_Click_3"/>
+
+                        <Button Content="Save" Margin="5,5,5,5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Button_Click_4"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <GroupBox Header="Common" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,10,10,0">
+                    <Grid>
+                        <Label Content="Name:" Margin="5,5,5,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <TextBox Margin="100,10,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Text="{Binding Path=Card.Name, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <Label Content="Card Type:" Margin="5,31,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <Grid Margin="100,33,5,5" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <ComboBox SelectedIndex="0" Text="{Binding Path=Card.CardType}" Width="Auto" Margin="0,0,2.5,0">
+                                <ComboBoxItem Content="Monster"/>
+                                <ComboBoxItem Content="Ritual"/>
+                                <ComboBoxItem Content="Fusion"/>
+                                <ComboBoxItem Content="Synchro"/>
+                                <ComboBoxItem Content="DarkSynchro"/>
+                                <ComboBoxItem Content="Xyz"/>
+                                <ComboBoxItem Content="Spell"/>
+                                <ComboBoxItem Content="Trap"/>
+                            </ComboBox>
+
+                            <ComboBox SelectedIndex="0" Visibility="{Binding IsMonster}" Text="{Binding Path=Card.CardSubType}" Width="Auto" Grid.Column="1" Margin="2.5,0,0,0">
+                                <ComboBoxItem Content="Normal"/>
+                                <ComboBoxItem Content="Effect"/>
+                                <ComboBoxItem Content="Divine-Beast"/>
+                                <ComboBoxItem Content="Gemini"/>
+                                <ComboBoxItem Content="Spirit"/>
+                                <ComboBoxItem Content="Toon"/>
+                                <ComboBoxItem Content="Tuner"/>
+                                <ComboBoxItem Content="Union"/>
+                            </ComboBox>
+
+                            <ComboBox SelectedIndex="0" Visibility="{Binding IsNotMonster}" Text="{Binding Path=Card.CardSubType}" Width="Auto" Grid.Column="1" Margin="2.5,0,0,0" SelectionChanged="ComboBox_SelectionChanged">
+                                <ComboBoxItem Content="None"/>
+                                <ComboBoxItem Content="Equip"/>
+                                <ComboBoxItem Content="Continuous"/>
+                                <ComboBoxItem Content="Counter"/>
+                                <ComboBoxItem Content="Quick-Play"/>
+                                <ComboBoxItem Content="Field"/>
+                                <ComboBoxItem Content="Ritual"/>
+                            </ComboBox>
+                        </Grid>
+
+                        <Label Content="Rarity:" Margin="5,57,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <ComboBox SelectedIndex="0" Margin="100,62,5,5" HorizontalAlignment="Stretch" VerticalAlignment="Top" Text="{Binding Path=Card.Rarity}">
+                            <ComboBoxItem Content="Common"/>
+                            <ComboBoxItem Content="Rare"/>
+                            <ComboBoxItem Content="SuperRare"/>
+                            <ComboBoxItem Content="UltraRare"/>
+                            <ComboBoxItem Content="SecretRare"/>
+                            <ComboBoxItem Content="UltimateRare"/>
+                            <ComboBoxItem Content="ParallelRare"/>
+                            <ComboBoxItem Content="StarfoilRare"/>
+                            <ComboBoxItem Content="GhostRare"/>
+                            <ComboBoxItem Content="GoldUltraRare"/>
+                        </ComboBox>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Header="Monster" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,10,10,0">
+                    <Grid>
+                        <Label Content="Attribute:" Margin="5,5,5,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <ComboBox SelectedIndex="0" Margin="100,7,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Text="{Binding Path=Card.Attribute}">
+                            <ComboBoxItem Content="Dark"/>
+                            <ComboBoxItem Content="Divine"/>
+                            <ComboBoxItem Content="Earth"/>
+                            <ComboBoxItem Content="Fire"/>
+                            <ComboBoxItem Content="Light"/>
+                            <ComboBoxItem Content="Water"/>
+                            <ComboBoxItem Content="Wind"/>
+                        </ComboBox>
+
+                        <Label Content="Level:" Margin="5,31,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <TextBox Margin="100,36,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Text="{Binding Path=Card.Level, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <Label Content="Attack/Defense:" Margin="5,57,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <Grid Margin="100,62,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBox Text="{Binding Path=Card.Attack, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,2.5,0" Width="Auto"/>
+                            <TextBox Text="{Binding Path=Card.Defense, UpdateSourceTrigger=PropertyChanged}" Margin="2.5,0,0,0" Width="Auto" Grid.Column="1"/>
+                        </Grid>
+
+                        <Label Content="Type:" Margin="5,83,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <TextBox Margin="100,88,5,5" HorizontalAlignment="Stretch" VerticalAlignment="Top" Text="{Binding Path=Card.Type, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Header="Description" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,10,10,0">
+                    <Grid>
+                        <Label Content="Description:" Margin="5,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <TextBox Margin="5,31,5,5" Height="75" HorizontalAlignment="Stretch" VerticalAlignment="Top" Text="{Binding Path=Card.Description, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True"/>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Header="Misc" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,10,10,0">
+                    <Grid>
+                        <Label Content="Edition:" Margin="5,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <TextBox Margin="100,10,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Text="{Binding Path=Card.Edition, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <Label Content="Set:" Margin="5,31,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <TextBox Margin="100,36,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Text="{Binding Path=Card.Set, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <Label Content="Number:" Margin="5,57,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <TextBox Margin="100,62,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Text="{Binding Path=Card.Number, UpdateSourceTrigger=PropertyChanged}"/>
+
+                        <Label Content="Copyright:" Margin="5,83,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <TextBox Margin="100,88,5,5" HorizontalAlignment="Stretch" VerticalAlignment="Top" Text="{Binding Path=Card.Copyright, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Grid>
+                </GroupBox>
+
+                <GroupBox Header="Buttons" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Content="Cover" Margin="5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+
+                        <Button Content="Effect" Margin="5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
+
+                        <Button Content="Export" Margin="5" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Click="Button_Click_2"/>
+                    </StackPanel>
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
+
+        <ui:CardView x:Name="cardView" Grid.Column="1"/>
+
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Width="5"/>
+    </Grid>
+</Window>
