@@ -18,6 +18,9 @@
     <!-- Used for edition -->
     <FontFamily x:Key="ITCStoneSerifSemibold">../Assets/Fonts/#StoneSerif-Semibold</FontFamily>
 
+    <BitmapImage x:Key="AssetCardBackImage" UriSource="../Assets/back.png"/>
+    <ImageBrush x:Key="AssetCardBackBrush" ImageSource="{StaticResource AssetCardBackImage}"/>
+    
     <BitmapImage x:Key="AssetMonsterCardImage" UriSource="../Assets/card_monster.png"/>
     <ImageBrush x:Key="AssetMonsterCardBrush" ImageSource="{StaticResource AssetMonsterCardImage}"/>
     

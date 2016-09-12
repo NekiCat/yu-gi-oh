@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TigeR.YuGiOh.Core.Data;
+using TigeR.YuGiOh.UI;
 
 namespace TigeR.YuGiOh
 {
@@ -26,7 +28,18 @@ namespace TigeR.YuGiOh
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
+            fullCardView.IsFaceDown = !fullCardView.IsFaceDown;
+        }
 
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            fullCardView.IsDefending = !fullCardView.IsDefending;
+        }
+
+        private void button2_Click(object sender, RoutedEventArgs e)
+        {
+            var loader = new CardLoader();
+            ((CardView)fullCardView.FrontSide).Card = loader.LoadFromFile("../../../Cards/Monster Reborn.card");
         }
     }
 }

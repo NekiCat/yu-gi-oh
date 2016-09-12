@@ -4,10 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TigeR.YuGiOh"
+        xmlns:component="clr-namespace:TigeR.YuGiOh.UI;assembly=UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="300" Width="300">
+        Title="MainWindow" Height="600" Width="600">
     <Grid>
         <Button x:Name="button" Content="Game" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="button_Click"/>
 
+        <Label Content="{Binding ElementName=fullCardView, Path=IsFaceDown}" Width="75" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,40,0,0"/>
+        
+        <Label Content="{Binding ElementName=fullCardView, Path=IsDefending}" Width="75" Height="26" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,60,0,0"/>
+
+        <component:FlipControl x:Name="fullCardView" HorizontalAlignment="Right" VerticalAlignment="Stretch">
+            <component:FlipControl.FrontSide>
+                <component:CardView/>
+            </component:FlipControl.FrontSide>
+        </component:FlipControl>
+        <Button x:Name="button1" Content="Button" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="75" Click="button1_Click"/>
+        <Button x:Name="button2" Content="Button" HorizontalAlignment="Left" Margin="170,10,0,0" VerticalAlignment="Top" Width="75" Click="button2_Click"/>
     </Grid>
 </Window>

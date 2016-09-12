@@ -57,50 +57,15 @@ namespace TigeR.YuGiOh.UI
             rainbowGradientStopList.Add(new GradientStop(Color.FromArgb(255, 180, 60, 161), 1));
             rainbowGradient = new LinearGradientBrush(rainbowGradientStopList, 25);
         }
-
-        private Independent<Card> card = new Independent<Card>();
-
+        
         public Card Card
         {
-            get
-            {
-                return card;
-            }
-            set
-            {
-                card.Value = value;
-            }
+            get { return (Card)GetValue(CardProperty); }
+            set { SetValue(CardProperty, value); }
         }
-
-        private Independent<bool> faceDown = new Independent<bool>();
-
-        public bool FaceDown
-        {
-            get
-            {
-                return faceDown;
-            }
-            set
-            {
-                faceDown.Value = value;
-            }
-        }
-
-        public Visibility UpFaceVisible
-        {
-            get
-            {
-                return faceDown ? Visibility.Collapsed : Visibility.Visible;
-            }
-        }
-
-        public Visibility DownFaceVisible
-        {
-            get
-            {
-                return faceDown ? Visibility.Visible : Visibility.Collapsed;
-            }
-        }
+        
+        public static readonly DependencyProperty CardProperty =
+            DependencyProperty.Register(nameof(Card), typeof(Card), typeof(CardView), new PropertyMetadata(new Card()));
 
         public Brush CardBackground
         {
@@ -230,11 +195,11 @@ namespace TigeR.YuGiOh.UI
         {
             get
             {
-                if (card.Value?.IsSpell ?? false)
+                if (Card?.IsSpell ?? false)
                 {
                     return "Spell Card";
                 }
-                else if (card.Value?.IsTrap ?? false)
+                else if (Card?.IsTrap ?? false)
                 {
                     return "Trap Card";
                 }
