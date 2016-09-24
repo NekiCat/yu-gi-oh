@@ -151,9 +151,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="Assets\Sounds\f4ngy_bridging-cards.wav" />
-    <Content Include="Assets\Sounds\f4ngy_card-flip.wav" />
-    <Content Include="Assets\Sounds\f4ngy_dealing-cards.wav" />
+    <Resource Include="Assets\Sounds\f4ngy_bridging-cards.wav" />
+    <Resource Include="Assets\Sounds\f4ngy_card-flip.wav" />
+    <Resource Include="Assets\Sounds\f4ngy_dealing-cards.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

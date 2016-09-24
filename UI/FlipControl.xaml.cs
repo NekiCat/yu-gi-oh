@@ -12,6 +12,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Media.Animation;
+using TigeR.YuGiOh.UI.Helper;
+using System.Media;
 
 // Taken from http://flipcontrol.codeplex.com/
 namespace TigeR.YuGiOh.UI
@@ -21,6 +23,8 @@ namespace TigeR.YuGiOh.UI
     /// </summary>
     public partial class FlipControl : UserControl
     {
+        private readonly SoundPlayer cardFlipSound = new SoundPlayer(Assets.Load("Sounds/f4ngy_card-flip.wav").Stream);
+
         public FlipControl()
         {
             InitializeComponent();
@@ -34,6 +38,7 @@ namespace TigeR.YuGiOh.UI
                 if (IsFaceDown != value)
                 {
                     SetValue(IsFlippedProperty, value);
+                    cardFlipSound.Play();
                     if (value)
                     {
                         ((Storyboard)Resources["FlipFaceDown"]).Begin();

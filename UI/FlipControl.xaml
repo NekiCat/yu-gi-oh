@@ -10,20 +10,9 @@
                 <ResourceDictionary Source="Resources/Assets.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <KeyTime x:Key="flipDuration">0:0:0.5</KeyTime>
+            <KeyTime x:Key="flipDuration">0:0:0.6</KeyTime>
 
             <Storyboard x:Key="FlipFaceUp">
-                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
-                                               Storyboard.TargetName="yrot1">
-                    <SplineDoubleKeyFrame KeyTime="{StaticResource flipDuration}" KeySpline="0,0,0,1" Value="180"></SplineDoubleKeyFrame>
-                </DoubleAnimationUsingKeyFrames>
-                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
-                                               Storyboard.TargetName="yrot2">
-                    <SplineDoubleKeyFrame KeyTime="{StaticResource flipDuration}" KeySpline="0,0,0,1" Value="360"></SplineDoubleKeyFrame>
-                </DoubleAnimationUsingKeyFrames>
-            </Storyboard>
-
-            <Storyboard x:Key="FlipFaceDown">
                 <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
                                                Storyboard.TargetName="yrot1">
                     <SplineDoubleKeyFrame KeyTime="{StaticResource flipDuration}" KeySpline="0,0,0,1" Value="0"></SplineDoubleKeyFrame>
@@ -31,6 +20,17 @@
                 <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
                                                Storyboard.TargetName="yrot2">
                     <SplineDoubleKeyFrame KeyTime="{StaticResource flipDuration}" KeySpline="0,0,0,1" Value="180"></SplineDoubleKeyFrame>
+                </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+
+            <Storyboard x:Key="FlipFaceDown">
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
+                                               Storyboard.TargetName="yrot1">
+                    <SplineDoubleKeyFrame KeyTime="{StaticResource flipDuration}" KeySpline="0,0,0,1" Value="180"></SplineDoubleKeyFrame>
+                </DoubleAnimationUsingKeyFrames>
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(AxisAngleRotation3D.Angle)"
+                                               Storyboard.TargetName="yrot2">
+                    <SplineDoubleKeyFrame KeyTime="{StaticResource flipDuration}" KeySpline="0,0,0,1" Value="360"></SplineDoubleKeyFrame>
                 </DoubleAnimationUsingKeyFrames>
             </Storyboard>
 
@@ -97,7 +97,7 @@
                 <Transform3DGroup>
                     <RotateTransform3D>
                         <RotateTransform3D.Rotation>
-                            <AxisAngleRotation3D x:Name="yrot2" Angle="0" Axis="0, 1, 0" />
+                            <AxisAngleRotation3D x:Name="yrot2" Angle="180" Axis="0, 1, 0" />
                         </RotateTransform3D.Rotation>
                     </RotateTransform3D>
                     <RotateTransform3D>

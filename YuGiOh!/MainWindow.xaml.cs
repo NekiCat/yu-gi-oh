@@ -39,7 +39,7 @@ namespace TigeR.YuGiOh
         private void button2_Click(object sender, RoutedEventArgs e)
         {
             var loader = new CardLoader();
-            ((CardView)fullCardView.FrontSide).Card = loader.LoadFromFile("../../../Cards/Monster Reborn.card");
+            fullCardView.FrontSide = new CardView() { Card = loader.LoadFromFile("card.card") };
         }
     }
 }
