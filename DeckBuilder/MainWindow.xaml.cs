@@ -3,6 +3,7 @@ using Microsoft.WindowsAPICodePack.Shell;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -29,6 +30,32 @@ namespace DeckBuilder
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        private static string MakeValidFileName(string name)
+        {
+            string invalidChars = System.Text.RegularExpressions.Regex.Escape(new String(System.IO.Path.GetInvalidFileNameChars()));
+            string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
+
+            return System.Text.RegularExpressions.Regex.Replace(name, invalidRegStr, "_");
+        }
+
+        private static Bitmap MakeThumbnail(Bitmap source)
+        {
+            var target = new Bitmap(256, 256, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            using (var graphics = Graphics.FromImage(target))
+            {
+                graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.High;
+                graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+
+                float scale = Math.Min(256f / source.Width, 256f / source.Height);
+                var scaleWidth = (int)(source.Width * scale);
+                var scaleHeight = (int)(source.Height * scale);
+                graphics.DrawImage(source, new System.Drawing.Rectangle(((int)256 - scaleWidth) / 2, ((int)256 - scaleHeight) / 2, scaleWidth, scaleHeight));
+            }
+
+            return target;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public Card Card
@@ -71,13 +98,16 @@ namespace DeckBuilder
         private void Close(object sender, CancelEventArgs e)
         {
             var loader = new CardLoader();
-            //using (var thumb = Capture.CreatePngThumbnail(cardView))
+            var bitmap = MakeThumbnail(cardView.Image);
+
+            using (var thumb = new MemoryStream())
             {
-                loader.SaveToFile("last.card", Card);
+                bitmap.Save(thumb, System.Drawing.Imaging.ImageFormat.Png);
+                loader.SaveToFile("last.card", Card, thumb);
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void SelectCoverImage(object sender, RoutedEventArgs e)
         {
             using (var dialog = new CommonOpenFileDialog())
             {
@@ -98,40 +128,40 @@ namespace DeckBuilder
             }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void ShowEffectEditor(object sender, RoutedEventArgs e)
         {
             var window = new EffectEditorWindow();
             window.ShowDialog();
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void ExportCardAsImage(object sender, RoutedEventArgs e)
         {
             using (var dialog = new CommonSaveFileDialog())
             {
                 dialog.DefaultExtension = "png";
-                dialog.DefaultFileName = Card.Name;
+                dialog.DefaultFileName = MakeValidFileName(Card.Set + " " + Card.Name);
                 dialog.OverwritePrompt = true;
                 dialog.DefaultDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
 
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
-                    cardView.HoloGradientStep = -1;
-                    //var bitmap = Capture.CaptureVisual(cardView, 813, 1185);
-                    //var encoder = new PngBitmapEncoder();
-                    //encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                    var bitmap = (BitmapSource)cardView.ImageSource;
+                    var encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(bitmap));
                     
-                    //using (var fs = new FileStream(dialog.FileName, FileMode.Create, FileAccess.Write))
+                    using (var fs = new FileStream(dialog.FileName, FileMode.Create, FileAccess.Write))
                     {
-                     //   encoder.Save(fs);
+                        encoder.Save(fs);
                     }
                 }
             }
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        private void LoadCardFromFile(object sender, RoutedEventArgs e)
         {
             using (var dialog = new CommonOpenFileDialog())
             {
+                dialog.Filters.Add(new CommonFileDialogFilter("Card", "*.card"));
                 dialog.DefaultExtension = "card";
 
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
@@ -149,20 +179,24 @@ namespace DeckBuilder
             }
         }
 
-        private void Button_Click_4(object sender, RoutedEventArgs e)
+        private void SaveCardToFile(object sender, RoutedEventArgs e)
         {
             using (var dialog = new CommonSaveFileDialog())
             {
+                dialog.Filters.Add(new CommonFileDialogFilter("Card", "*.card"));
                 dialog.DefaultExtension = "card";
-                dialog.DefaultFileName = Card.Name;
+                dialog.DefaultFileName = MakeValidFileName(Card.Set + " " + Card.Name);
                 dialog.OverwritePrompt = true;
 
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
                     var loader = new CardLoader();
-                    //using (var thumb = Capture.CreatePngThumbnail(cardView))
+                    var bitmap = MakeThumbnail(cardView.Image);
+
+                    using (var thumb = new MemoryStream())
                     {
-                        loader.SaveToFile(dialog.FileName, Card);
+                        bitmap.Save(thumb, System.Drawing.Imaging.ImageFormat.Png);
+                        loader.SaveToFile(dialog.FileName, Card, thumb);
                     }
                 }
             }
@@ -173,7 +207,7 @@ namespace DeckBuilder
 
         }
 
-        private void Button_Click_5(object sender, RoutedEventArgs e)
+        private void NewCard(object sender, RoutedEventArgs e)
         {
             var edition = Card.Edition;
             var set = Card.Set;

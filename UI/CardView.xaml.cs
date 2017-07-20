@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -40,14 +41,14 @@ namespace TigeR.YuGiOh.UI
                 new GradientStop(Colors.Gold, 1)
             });
 
-            rainbowGradient = new LinearGradientBrush(new GradientStopCollection(5)
+            /*rainbowGradient = new LinearGradientBrush(new GradientStopCollection(5)
             {
                 new GradientStop(Color.FromArgb(255, 184, 64, 77), 0),
                 new GradientStop(Color.FromArgb(255, 206, 208, 113), .2),
                 new GradientStop(Color.FromArgb(255, 168, 223, 121), .6),
                 new GradientStop(Color.FromArgb(255, 161, 229, 206), .8),
                 new GradientStop(Color.FromArgb(255, 180, 60, 161), 1)
-            }, 25);
+            }, 25);*/
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -101,7 +102,9 @@ namespace TigeR.YuGiOh.UI
             Redraw();
         }
 
-        public ImageSource Image { get; private set; }
+        public Bitmap Image { get; private set; }
+
+        public BitmapSource ImageSource { get; private set; }
 
         public Visibility HolofoilVisibility => Card?.Rarity?.Equals("SuperRare", StringComparison.OrdinalIgnoreCase) ?? false ? Visibility.Visible : Visibility.Collapsed;
 
@@ -121,11 +124,11 @@ namespace TigeR.YuGiOh.UI
         public void Redraw()
         {
             if (Card == null) return;
-            var bitmap = renderer.Render(Card);
-            var hBitmap = bitmap.GetHbitmap();
+            Image = renderer.Render(Card);
+            var hBitmap = Image.GetHbitmap();
             try
             {
-                Image = Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                ImageSource = Imaging.CreateBitmapSourceFromHBitmap(hBitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
             }
             finally
             {

@@ -11,7 +11,7 @@
              d:DesignHeight="500" d:DesignWidth="333" MouseMove="UserControl_MouseMove">
     <Viewbox>
         <Grid Height="8.6cm" Width="5.9cm">
-            <Image Source="{Binding Image}" RenderOptions.BitmapScalingMode="Fant"/>
+            <Image Source="{Binding ImageSource}" RenderOptions.BitmapScalingMode="Fant"/>
         </Grid>
     </Viewbox>
 </UserControl>
