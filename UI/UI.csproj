@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,6 +35,13 @@
   <ItemGroup>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="PropertyChanged, Version=2.1.3.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
+      <HintPath>..\packages\PropertyChanged.Fody.2.1.3\lib\netstandard1.0\PropertyChanged.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Svg, Version=2.2.1.39233, Culture=neutral, PublicKeyToken=12a0bac221edeae2, processorArchitecture=MSIL">
+      <HintPath>..\packages\Svg.2.3.0\lib\net35\Svg.dll</HintPath>
+    </Reference>
     <Reference Include="Svg2Xaml, Version=0.2.5773.26975, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Xaml2Svg.0.2.3\lib\net40\Svg2Xaml.dll</HintPath>
       <Private>True</Private>
@@ -47,21 +56,14 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="UpdateControls, Version=2.3.0.0, Culture=neutral, PublicKeyToken=19e83a8289e31a8f, processorArchitecture=MSIL">
-      <HintPath>..\packages\UpdateControls.2.3.1.0\lib\net45\UpdateControls.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="UpdateControls.XAML, Version=2.3.0.0, Culture=neutral, PublicKeyToken=19e83a8289e31a8f, processorArchitecture=MSIL">
-      <HintPath>..\packages\UpdateControls.2.3.1.0\lib\net45\UpdateControls.XAML.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="WriteableBitmapEx.Wpf, Version=1.5.0.0, Culture=neutral, PublicKeyToken=50375ca6144f1c69, processorArchitecture=MSIL">
-      <HintPath>..\packages\WriteableBitmapEx.1.5.0.0\lib\net40\WriteableBitmapEx.Wpf.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\WriteableBitmapEx.1.5.1.0\lib\net40\WriteableBitmapEx.Wpf.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Rendering\BackgroundProvider.cs" />
+    <Compile Include="Rendering\CardGenerator.cs" />
     <Compile Include="CardView.xaml.cs">
       <DependentUpon>CardView.xaml</DependentUpon>
     </Compile>
@@ -69,12 +71,17 @@
       <DependentUpon>FlipControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helper\Assets.cs" />
-    <Compile Include="Helper\Capture.cs" />
-    <Compile Include="Helper\InvertedBooleanConverter.cs" />
-    <Compile Include="Helper\NullToVisibilityConverter.cs" />
-    <Compile Include="Helper\TitleStretchPanel.cs" />
-    <Compile Include="Helper\ValueConverterGroup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rendering\AbstractAssetProvider.cs" />
+    <Compile Include="Rendering\FontProvider.cs" />
+    <Compile Include="Rendering\IconProvider.cs" />
+    <Compile Include="Rendering\StarProvider.cs" />
+    <Compile Include="Resources\CardRendering.cs" />
+    <Compile Include="Resources\CardRendering.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>CardRendering.settings</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Include="CardView.xaml">
@@ -90,14 +97,14 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\card_monster.png" />
+    <EmbeddedResource Include="Assets\card_monster.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Fonts\Stone Serif Semibold.ttf" />
-    <Resource Include="Assets\Fonts\Yu-Gi-Oh! ITC Stone Serif LT Italic.ttf" />
-    <Resource Include="Assets\Fonts\Yu-Gi-Oh! ITC Stone Serif Small Caps Bold.ttf" />
-    <Resource Include="Assets\Fonts\Yu-Gi-Oh! Matrix Book.ttf" />
-    <Resource Include="Assets\Fonts\Yu-Gi-Oh! Matrix Regular Small Caps 2.ttf" />
+    <EmbeddedResource Include="Assets\Fonts\Stone Serif Semibold.ttf" />
+    <EmbeddedResource Include="Assets\Fonts\Yu-Gi-Oh! ITC Stone Serif LT Italic.ttf" />
+    <EmbeddedResource Include="Assets\Fonts\Yu-Gi-Oh! ITC Stone Serif Small Caps Bold.ttf" />
+    <EmbeddedResource Include="Assets\Fonts\Yu-Gi-Oh! Matrix Book.ttf" />
+    <EmbeddedResource Include="Assets\Fonts\Yu-Gi-Oh! Matrix Regular Small Caps 2.ttf" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Game\Game.csproj">
@@ -106,33 +113,39 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\spell.svg" />
+    <EmbeddedResource Include="Assets\spell.svg" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Resources\CardRendering.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>CardRendering.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\attribute_dark.svg" />
-    <Resource Include="Assets\attribute_divine.svg" />
-    <Resource Include="Assets\attribute_earth.svg" />
-    <Resource Include="Assets\attribute_fire.svg" />
-    <Resource Include="Assets\attribute_light.svg" />
-    <Resource Include="Assets\attribute_water.svg" />
-    <Resource Include="Assets\attribute_wind.svg" />
-    <Resource Include="Assets\level_star.svg" />
+    <EmbeddedResource Include="Assets\attribute_dark.svg" />
+    <EmbeddedResource Include="Assets\attribute_divine.svg" />
+    <EmbeddedResource Include="Assets\attribute_earth.svg" />
+    <EmbeddedResource Include="Assets\attribute_fire.svg" />
+    <EmbeddedResource Include="Assets\attribute_light.svg" />
+    <EmbeddedResource Include="Assets\attribute_water.svg" />
+    <EmbeddedResource Include="Assets\attribute_wind.svg" />
+    <EmbeddedResource Include="Assets\level_star.svg" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\card_dark_synchro.png" />
-    <Resource Include="Assets\card_effect.png" />
-    <Resource Include="Assets\card_fusion.png" />
-    <Resource Include="Assets\card_ritual.png" />
-    <Resource Include="Assets\card_spell.png" />
-    <Resource Include="Assets\card_synchro.png" />
-    <Resource Include="Assets\card_trap.png" />
-    <Resource Include="Assets\card_xyz.png" />
+    <EmbeddedResource Include="Assets\card_dark_synchro.png" />
+    <EmbeddedResource Include="Assets\card_effect.png" />
+    <EmbeddedResource Include="Assets\card_fusion.png" />
+    <EmbeddedResource Include="Assets\card_ritual.png" />
+    <EmbeddedResource Include="Assets\card_spell.png" />
+    <EmbeddedResource Include="Assets\card_synchro.png" />
+    <EmbeddedResource Include="Assets\card_trap.png" />
+    <EmbeddedResource Include="Assets\card_xyz.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\trap.svg" />
+    <EmbeddedResource Include="Assets\trap.svg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\back.png" />
@@ -149,13 +162,25 @@
     <Resource Include="Assets\ts_quick-play.svg" />
     <Resource Include="Assets\ts_ritual.svg" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\rank_star.svg" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Sounds\f4ngy_bridging-cards.wav" />
     <Resource Include="Assets\Sounds\f4ngy_card-flip.wav" />
     <Resource Include="Assets\Sounds\f4ngy_dealing-cards.wav" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="FodyWeavers.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Fody.2.1.2\build\netstandard1.0\Fody.targets" Condition="Exists('..\packages\Fody.2.1.2\build\netstandard1.0\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Verwenden Sie die Wiederherstellung von NuGet-Paketen, um die fehlenden Dateien herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Fody.2.1.2\build\netstandard1.0\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.2.1.2\build\netstandard1.0\Fody.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

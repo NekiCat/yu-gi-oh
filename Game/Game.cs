@@ -11,7 +11,7 @@ using TigeR.YuGiOh.Core.Players;
 
 namespace TigeR.YuGiOh.Core
 {
-    public class Game
+    public class Game : IDisposable
     {
         private Dictionary<String, List<LuaFunction>> eventHandler = new Dictionary<String, List<LuaFunction>>();
 
@@ -121,6 +121,11 @@ namespace TigeR.YuGiOh.Core
                     }
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            context.Dispose();
         }
     }
 }

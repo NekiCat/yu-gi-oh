@@ -101,6 +101,7 @@ namespace TigeR.YuGiOh.Core.Data
             using (var metaStream = zipArchive.GetEntry("META-INF/metadata.xml").Open())
             {
                 var meta = XDocument.Load(metaStream);
+                var version = new Version(meta.Root.Attribute("version")?.Value ?? "1.0");
                 foreach (var entry in meta.Descendants("meta-entry"))
                 {
                     var key = entry.Attribute("name")?.Value ?? String.Empty;
@@ -128,7 +129,6 @@ namespace TigeR.YuGiOh.Core.Data
                             card.Level = Convert.ToInt32(entry.Attribute("value")?.Value);
                             break;
                         case "LevelReversed":
-                            // todo: is this renderinfo? is this based on another card property?
                             bool levelReversed = false;
                             Boolean.TryParse(entry.Attribute("value")?.Value, out levelReversed);
                             card.LevelReversed = levelReversed;
@@ -143,7 +143,24 @@ namespace TigeR.YuGiOh.Core.Data
                             card.Set = entry.Attribute("value")?.Value ?? String.Empty;
                             break;
                         case "Type":
-                            card.Type = entry.Attribute("value")?.Value ?? String.Empty;
+                            if (version.Major == 1 && version.Minor == 0)
+                            {
+                                foreach (var item in (entry.Attribute("value")?.Value ?? String.Empty).Split('/'))
+                                {
+                                    card.Type.Add(item);
+                                }
+                            }
+                            else
+                            {
+                                foreach (var item in entry.Descendants("item"))
+                                {
+                                    var attr = item.Attribute("value")?.Value;
+                                    if (attr != null)
+                                    {
+                                        card.Type.Add(attr);
+                                    }
+                                }
+                            }
                             break;
                         case "Description":
                             card.Description = entry.Attribute("value")?.Value ?? String.Empty;
@@ -177,7 +194,7 @@ namespace TigeR.YuGiOh.Core.Data
                         var key = entry.Attribute("name")?.Value ?? String.Empty;
                         switch (key)
                         {
-                            
+                            // todo: fill
                         }
                     }
                 }
@@ -244,6 +261,7 @@ namespace TigeR.YuGiOh.Core.Data
 
             // Write card metadata
             var meta = new XElement("metadata");
+            meta.SetAttributeValue("version", "1.1");
 
             AddMetaEntry(meta, "Author", card.Author);
             AddMetaEntry(meta, "CardType", card.CardType);
@@ -269,10 +287,13 @@ namespace TigeR.YuGiOh.Core.Data
             }
 
             // Write the thumbnail
-            using (var thumbStream = zipArchive.CreateEntry("META-INF/thumbnail.png").Open())
+            if (thumbnail != null)
             {
-                thumbnail.Seek(0, SeekOrigin.Begin);
-                thumbnail.CopyTo(thumbStream);
+                using (var thumbStream = zipArchive.CreateEntry("META-INF/thumbnail.png").Open())
+                {
+                    thumbnail.Seek(0, SeekOrigin.Begin);
+                    thumbnail.CopyTo(thumbStream);
+                }
             }
         }
 
@@ -281,6 +302,19 @@ namespace TigeR.YuGiOh.Core.Data
             var element = new XElement("meta-entry");
             element.SetAttributeValue("name", name);
             element.SetAttributeValue("value", value);
+            root.Add(element);
+        }
+
+        private void AddMetaEntry(XElement root, string name, IEnumerable<String> value)
+        {
+            var element = new XElement("meta-entry");
+            element.SetAttributeValue("name", name);
+            foreach (var itemValue in value)
+            {
+                var item = new XElement("item");
+                item.SetAttributeValue("value", itemValue);
+                element.Add(item);
+            }
             root.Add(element);
         }
 

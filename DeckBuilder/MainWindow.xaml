@@ -86,7 +86,7 @@
                     </Grid>
                 </GroupBox>
 
-                <GroupBox Header="Monster" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,10,10,0">
+                <GroupBox Header="Monster" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,10,10,0" Height="200">
                     <Grid>
                         <Label Content="Attribute:" Margin="5,5,5,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                         <ComboBox SelectedIndex="0" Margin="100,7,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Text="{Binding Path=Card.Attribute}">
@@ -99,8 +99,16 @@
                             <ComboBoxItem Content="Wind"/>
                         </ComboBox>
 
-                        <Label Content="Level:" Margin="5,31,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <TextBox Margin="100,36,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Top" Text="{Binding Path=Card.Level, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Content="Stars:" Margin="5,31,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <Grid Margin="100,36,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBox Margin="0,0,2.5,0" Width="Auto" Text="{Binding Path=Card.Level, UpdateSourceTrigger=PropertyChanged}"/>
+                            <CheckBox Margin="2.5,0,0,0" Width="Auto" Grid.Column="1" Content="Reversed" IsChecked="{Binding Path=Card.LevelReversed, UpdateSourceTrigger=PropertyChanged}"/>
+                        </Grid>
 
                         <Label Content="Attack/Defense:" Margin="5,57,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                         <Grid Margin="100,62,5,0" HorizontalAlignment="Stretch" VerticalAlignment="Top">
@@ -113,15 +121,31 @@
                             <TextBox Text="{Binding Path=Card.Defense, UpdateSourceTrigger=PropertyChanged}" Margin="2.5,0,0,0" Width="Auto" Grid.Column="1"/>
                         </Grid>
 
-                        <Label Content="Type:" Margin="5,83,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <TextBox Margin="100,88,5,5" HorizontalAlignment="Stretch" VerticalAlignment="Top" Text="{Binding Path=Card.Type, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Label Content="Types:" Margin="5,83,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <TextBox x:Name="typeTextBox" Margin="100,88,29,5" HorizontalAlignment="Stretch" VerticalAlignment="Top" />
+                        <Button Content="+" Margin="0,88,5,5" HorizontalAlignment="Right" VerticalAlignment="Top" Width="18" Height="18" Click="AddTypeItem"/>
+
+                        <ListBox IsSynchronizedWithCurrentItem="True" x:Name="typeListBox" ItemsSource="{Binding Path=Card.Type, UpdateSourceTrigger=PropertyChanged}" Margin="100,114,5,5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <TextBlock Text="{Binding}"/>
+                                        <Button Content="x" Width="18" Height="18" HorizontalAlignment="Right" Click="RemoveTypeItem" Tag="{Binding}"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                        </ListBox>
                     </Grid>
                 </GroupBox>
 
                 <GroupBox Header="Description" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10,10,10,0">
                     <Grid>
-                        <Label Content="Description:" Margin="5,5,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-                        <TextBox Margin="5,31,5,5" Height="75" HorizontalAlignment="Stretch" VerticalAlignment="Top" Text="{Binding Path=Card.Description, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True"/>
+                        <TextBox Margin="5,5,5,5" Height="75" HorizontalAlignment="Stretch" VerticalAlignment="Top" Text="{Binding Path=Card.Description, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" AcceptsReturn="True"/>
                     </Grid>
                 </GroupBox>
 
@@ -153,7 +177,7 @@
             </StackPanel>
         </ScrollViewer>
 
-        <ui:CardView x:Name="cardView" Grid.Column="1"/>
+        <ui:CardView x:Name="cardView" Grid.Column="1" Card="{Binding Card}"/>
 
         <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Width="5"/>
     </Grid>

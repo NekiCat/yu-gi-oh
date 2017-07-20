@@ -60,7 +60,7 @@
 
     <Viewport3D>
         <Viewport3D.Camera>
-            <PerspectiveCamera Position="0, 0, 3"/>
+            <PerspectiveCamera Position="0, 0, 1.8"/>
         </Viewport3D.Camera>
 
         <Viewport2DVisual3D x:Name="Side1">
@@ -82,8 +82,8 @@
 
             <!-- Geometry and material for the Viewport2DVisual3D -->
             <Viewport2DVisual3D.Geometry>
-                <MeshGeometry3D Positions="-1,1,0 -1,-1,0 1,-1,0 1,1,0"
-                          TextureCoordinates="-0.2,0 -0.2,1 1.2,1 1.2,0" 
+                <MeshGeometry3D Positions="-0.37,0.5,0 -0.37,-0.5,0 0.37,-0.5,0 0.37,0.5,0"
+                          TextureCoordinates="0,0 0,1 1,1 1,0" 
                           TriangleIndices="0 1 2 0 2 3" />
             </Viewport2DVisual3D.Geometry>
             <Viewport2DVisual3D.Material>
@@ -110,8 +110,8 @@
 
             <!-- Geometry and material for the Viewport2DVisual3D -->
             <Viewport2DVisual3D.Geometry>
-                <MeshGeometry3D Positions="-1,1,0 -1,-1,0 1,-1,0 1,1,0"
-                          TextureCoordinates="-0.2,0 -0.2,1 1.2,1 1.2,0" 
+                <MeshGeometry3D Positions="-0.37,0.5,0 -0.37,-0.5,0 0.37,-0.5,0 0.37,0.5,0"
+                          TextureCoordinates="0,0 0,1 1,1 1,0" 
                           TriangleIndices="0 1 2 0 2 3" />
             </Viewport2DVisual3D.Geometry>
             <Viewport2DVisual3D.Material>

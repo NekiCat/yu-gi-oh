@@ -21,16 +21,16 @@ using TigeR.YuGiOh.Core.Cards;
 using TigeR.YuGiOh.Core.Data;
 using TigeR.YuGiOh.Core.Effects;
 using TigeR.YuGiOh.UI.Helper;
-using UpdateControls.Fields;
-using UpdateControls.XAML;
 
 namespace DeckBuilder
 {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public Card Card
         {
             get
@@ -46,7 +46,7 @@ namespace DeckBuilder
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = ForView.Wrap(this);
+            DataContext = this;
         }
 
         public Visibility IsMonster => Card.IsMonster ? Visibility.Visible : Visibility.Collapsed;
@@ -71,9 +71,9 @@ namespace DeckBuilder
         private void Close(object sender, CancelEventArgs e)
         {
             var loader = new CardLoader();
-            using (var thumb = Capture.CreatePngThumbnail(cardView))
+            //using (var thumb = Capture.CreatePngThumbnail(cardView))
             {
-                loader.SaveToFile("last.card", Card, thumb);
+                loader.SaveToFile("last.card", Card);
             }
         }
 
@@ -116,13 +116,13 @@ namespace DeckBuilder
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
                     cardView.HoloGradientStep = -1;
-                    var bitmap = Capture.CaptureVisual(cardView, 813, 1185);
-                    var encoder = new PngBitmapEncoder();
-                    encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                    //var bitmap = Capture.CaptureVisual(cardView, 813, 1185);
+                    //var encoder = new PngBitmapEncoder();
+                    //encoder.Frames.Add(BitmapFrame.Create(bitmap));
                     
-                    using (var fs = new FileStream(dialog.FileName, FileMode.Create, FileAccess.Write))
+                    //using (var fs = new FileStream(dialog.FileName, FileMode.Create, FileAccess.Write))
                     {
-                        encoder.Save(fs);
+                     //   encoder.Save(fs);
                     }
                 }
             }
@@ -137,7 +137,14 @@ namespace DeckBuilder
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
                     var loader = new CardLoader();
-                    Card = loader.LoadFromFile(dialog.FileName);
+                    try
+                    {
+                        Card = loader.LoadFromFile(dialog.FileName);
+                    }
+                    catch (IOException ex)
+                    {
+                        MessageBox.Show(ex.Message, "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
             }
         }
@@ -153,9 +160,9 @@ namespace DeckBuilder
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
                 {
                     var loader = new CardLoader();
-                    using (var thumb = Capture.CreatePngThumbnail(cardView))
+                    //using (var thumb = Capture.CreatePngThumbnail(cardView))
                     {
-                        loader.SaveToFile(dialog.FileName, Card, thumb);
+                        loader.SaveToFile(dialog.FileName, Card);
                     }
                 }
             }
@@ -180,6 +187,27 @@ namespace DeckBuilder
                 Number = number,
                 Copyright = copyright,
             };
+        }
+
+        private void RemoveTypeItem(object sender, RoutedEventArgs e)
+        {
+            var item = (string)((Button)e.Source).Tag;
+            if (item == null) return;
+            Card.Type.Remove(item);
+        }
+
+        private void AddTypeItem(object sender, RoutedEventArgs e)
+        {
+            var text = typeTextBox.Text.Trim();
+            if (text.Length == 0) return;
+            if (Card.Type.Contains(text))
+            {
+                MessageBox.Show("Type " + text + " is already set.", "Error", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+            else
+            {
+                Card.Type.Add(text);
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NullGuard;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace TigeR.YuGiOh.Core.Cards
         /// </summary>
         public T Value { get; }
 
-        public Resource(string filename, Stream stream, string mime, T value)
+        public Resource(string filename, Stream stream, string mime, [AllowNull] T value)
         {
             Filename = filename;
             Stream = stream;
