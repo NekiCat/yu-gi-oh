@@ -16,22 +16,11 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
-            //Game game = new Game(new DefaultPlayer(), new DefaultPlayer(), new ConsoleLogger());
-            //game.RunAsync().Wait();
-
-            var cl = new CardLoader();
-            var a = new CardGenerator();
-
-            foreach (var file in Directory.GetFiles("../../../Cards/", "*.card"))
-            {
-                var c = cl.LoadFromFile(file);
-                var b = a.Render(c);
-
-                b.Save("../../../Cards/" + Path.GetFileName(file) + ".bmp");
-            }
+            Game game = new Game(new DefaultPlayer(), new DefaultPlayer(), new ConsoleLogger());
+            game.RunAsync().Wait();
 
             Console.WriteLine("TERMINATED");
-            //Console.ReadKey();
+            Console.ReadKey();
         }
     }
 }

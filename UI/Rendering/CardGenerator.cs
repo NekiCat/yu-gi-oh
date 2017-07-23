@@ -32,7 +32,10 @@ namespace TigeR.YuGiOh.UI.Rendering
 
                 using (var icon = this.icon.GetAsset(card))
                 {
-                    g.DrawImage(icon, settings.IconPosition);
+                    if (icon != null)
+                    {
+                        g.DrawImage(icon, settings.IconPosition);
+                    }
                 }
 
                 if (card.IsMonster)
@@ -94,9 +97,12 @@ namespace TigeR.YuGiOh.UI.Rendering
 
         private void DrawCover(Graphics graphics, Card card)
         {
-            using (var cover = new Bitmap(card.Resources[card.Cover].Stream))
+            if (card.Resources.ContainsKey(card.Cover))
             {
-                graphics.DrawImage(cover, new Rectangle(settings.CoverPosition, settings.CoverSize));
+                using (var cover = new Bitmap(card.Resources[card.Cover].Stream))
+                {
+                    graphics.DrawImage(cover, new Rectangle(settings.CoverPosition, settings.CoverSize));
+                }
             }
         }
 
@@ -138,7 +144,7 @@ namespace TigeR.YuGiOh.UI.Rendering
                 }
             }
 
-            using (var font = new Font(fonts.Description, settings.DescriptionFontSize, FontStyle.Regular))
+            using (var font = new Font(fonts.Description, settings.DescriptionFontSize, FontStyle.Italic))
             {
                 if (card.IsMonster)
                 {
@@ -147,7 +153,7 @@ namespace TigeR.YuGiOh.UI.Rendering
                 }
                 else
                 {
-                    graphics.DrawRectangle(Pens.Red, new Rectangle(settings.DescriptionOtherPosition, settings.DescriptionOtherSize));
+                    //graphics.DrawRectangle(Pens.Red, new Rectangle(settings.DescriptionOtherPosition, settings.DescriptionOtherSize));
                     graphics.DrawString(card.Description, font, Brushes.Black, new Rectangle(settings.DescriptionOtherPosition, settings.DescriptionOtherSize));
                 }
             }

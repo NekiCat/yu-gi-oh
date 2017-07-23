@@ -23,13 +23,16 @@ namespace TigeR.YuGiOh.UI.Rendering
 
         protected Bitmap LoadImage(string filename)
         {
-            return new Bitmap(Load(filename));
+            var stream = Load(filename);
+            if (stream == null) return null;
+            return new Bitmap(stream);
         }
 
         protected Bitmap LoadSvg(string filename, Size size)
         {
             var assembly = Assembly.GetExecutingAssembly();
             using (var stream = Load(filename)) {
+                if (stream == null) return null;
                 var doc = SvgDocument.Open<SvgDocument>(stream);
                 return doc.Draw(size.Width, size.Height);
             }
